@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>Address Form</h2>
+  <form method="post" id="addressForm" 
+  data-states-url="{% url 'ajax_load_states' %}" 
+  data-districts-url="{% url 'ajax_load_districts' %}" 
+  data-cities-url="{% url 'ajax_load_cities' %}" 
+  novalidate>
+    {% csrf_token %}
+    <table>
+      
+      {{ form.as_table }}
+    </table>
+    <button type="submit">Save</button>
+  </form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+  
+  // fetch states
+    $("#id_country").change(function () {
+      console.log("States");
+      var url = $("#addressForm").attr("data-states-url");  
+      var countryId = $(this).val();  
+
+      $.ajax({                      
+        url: url,                    
+        data: {
+          'country': countryId       
+        },
+        success: function (data) {  
+          $("#id_state").html(data);  
+        }
+      });
+
+    });
+  
+    // fetch districts
+    $("#id_state").change(function () {
+      console.log("District");
+      var url = $("#addressForm").attr("data-districts-url");  
+      var stateId = $(this).val();  
+
+      $.ajax({                      
+        url: url,                    
+        data: {
+          'state': stateId       
+        },
+        success: function (data) {  
+          $("#id_district").html(data);  
+        }
+      });
+
+    });
+
+    // fetch cities
+     $("#id_district").change(function () {
+      var url = $("#addressForm").attr("data-cities-url");  
+      var districtId = $(this).val();  
+
+      $.ajax({                      
+        url: url,                    
+        data: {
+          'district': districtId       
+        },
+        success: function (data) {  
+          $("#id_city").html(data);  
+        }
+      });
+
+    }); 
+  </script>
+
+
+{% endblock %}

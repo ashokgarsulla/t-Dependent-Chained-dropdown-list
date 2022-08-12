@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Addresses{% endblock %}
+
+{% block content %}
+  <h2>Address list</h2>
+
+  <p>
+    <a href="{% url 'address_add' %}">Add Address</a>
+  </p>
+
+  <table border="1" >
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th>State</th>
+        <th>District</th>
+        <th>City</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for add in addresses %}
+        <tr>
+          <td>{{ add.country }}</td>
+          <td>{{ add.state }}</td>
+          <td>{{ add.district }}</td>
+          <td>{{ add.city }}</td>
+          
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No Address in the database. <a href="{% url 'address_add' %}">Add the first Address</a>.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
